@@ -26,19 +26,16 @@ public class Modificable {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Producto prod = new Producto(1, "arroz", "largo", 200, 40, true); //
+//        Producto prod = new Producto(222, "fideos", "tirabuzon", 200, 100, true); //
+        
         ProductoData prodat = new ProductoData();
-        prodat.obtenerProducto(1);
+//        prodat.obtenerProducto(1);
         
-        Producto pro = prodat.obtenerProducto(1);
+        Producto pro = prodat.obtenerProducto(111);
         
-        DetalleCompra detalle = new DetalleCompra(2, 500000, pro.getIdProducto(), pro.getNombreProducto());
+        DetalleCompra detalle = new DetalleCompra(3, 500, pro.getIdProducto(), pro.getNombreProducto());
         DetalleCompraData detalleData = new DetalleCompraData();
         
         detalleData.guardarDetalle(detalle);
-        
-        
-        
-
     }
 }

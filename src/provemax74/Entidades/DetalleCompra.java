@@ -20,13 +20,13 @@ public class DetalleCompra {
     
     private String nombreProducto;
     
-    public DetalleCompra(int idDetalle, int cantidad, double precioCosto, Compra compra, Producto producto) {
-        this.idDetalle = idDetalle;
-        this.cantidad = cantidad;
-        this.precioCosto = precioCosto;
-        this.compra = compra;
-        this.producto = producto;
-    }
+//    public DetalleCompra(int idDetalle, int cantidad, double precioCosto, Compra compra, Producto producto) {
+//        this.idDetalle = idDetalle;
+//        this.cantidad = cantidad;
+//        this.precioCosto = precioCosto;
+//        this.compra = compra;
+//        this.producto = producto;
+//    }
 
     public DetalleCompra() {
     }
@@ -45,6 +45,12 @@ public class DetalleCompra {
         this.idProducto = idProducto;
         this.nombreProducto = nombreProducto;
 //        this.producto = producto;
+    }
+
+    public DetalleCompra(int cantidad, double precioCosto, Producto producto) {
+        this.cantidad = cantidad;
+        this.precioCosto = precioCosto;
+        this.producto = producto;
     }
 
     public int getIdProducto() {

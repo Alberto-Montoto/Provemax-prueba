@@ -39,15 +39,16 @@ public class DetalleCompraData {
     
     //Guardar Detalle
     public void guardarDetalle(DetalleCompra detalle){
-        String sql =  "INSERT INTO detallecompra (cantidad, precioCosto, nombreProducto, idProducto)"
+        String sql =  "INSERT INTO detallecompra (cantidad, precioCosto, nombreProducto, idProducto)"//
                 + "VALUES (?,?,?,?)";
         
         try {
             PreparedStatement ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setInt(1, detalle.getCantidad());
-            ps.setDouble(2, detalle.getPrecioCosto());
-            ps.setString(3, detalle.getProducto().getNombreProducto());
-            ps.setInt(4, detalle.getProducto().getIdProducto());
+            ps.setDouble(2, detalle.getPrecioCosto()* detalle.getCantidad());
+//            JOptionPane.showMessageDialog(null, detalle.getNombreProducto());
+            ps.setString(3, detalle.getNombreProducto());
+            ps.setInt(4, detalle.getIdProducto());
             ps.executeUpdate();
             
             ResultSet rs =  ps.getGeneratedKeys();
