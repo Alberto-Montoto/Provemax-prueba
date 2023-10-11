@@ -87,15 +87,23 @@ public class DetalleCompraData {
     
     //Modificar Detalle
     public void modificarDetalle(DetalleCompra detalle) {
-        String sql = "UPDATE detallecompra SET cantidad = ?, precioCosto = ?, nombreProducto = ?,"
+        String sql = "UPDATE detallecompra SET  cantidad = ?, precioCosto = ?,  nombreProducto = ?," //precioCosto = ?,
                 + " idProducto = ? WHERE idDetalle = ?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
+            
+//            ps.setInt(1, detalle.getIdDetalle());
             ps.setInt(1, detalle.getCantidad());
-            ps.setDouble(2, detalle.getPrecioCosto());
+            ps.setDouble(2, detalle.getProducto().getPrecioActual()* detalle.getCantidad()); //detalle.getPrecioCosto()); 
             ps.setString(3, detalle.getProducto().getNombreProducto());
             ps.setInt(4, detalle.getProducto().getIdProducto());
+            ps.setInt(5, detalle.getIdDetalle());
             
+//            ps.setInt(1, detalle.getCantidad());
+//            ps.setDouble(2, detalle.getCantidad()* detalle.getProducto().getPrecioActual());
+//            ps.setString(3, detalle.getNombreProducto());
+//            ps.setInt(4, detalle.getIdProducto());
+//            ps.setInt(5, detalle.getIdDetalle());
             
             int modificado = ps.executeUpdate();
                                    
@@ -105,10 +113,34 @@ public class DetalleCompraData {
             ps.close();
             
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al conectar con la tabla DetalleCompra");
+            JOptionPane.showMessageDialog(null, "Error al conectar con la tabla DetalleCompra" + ex.getMessage());
         }
         
     }
+    
+    
+    
+//    public void modificarDetalle(int idDetalleCompra, int nuevaCantidad, double nuevoPrecio, int nuevoIdProducto, String nuevoNombre) {
+//    String sql = "UPDATE detallecompra SET precio=?, cantidad=?, idProducto=? WHERE idDetalleCompra=?";
+//
+//    try (PreparedStatement ps = con.prepareStatement(sql)) {
+//        ps.setDouble(1, nuevoPrecio);
+//        ps.setInt(2, nuevaCantidad);
+//        ps.setInt(3, idDetalleCompra);
+//        ps.setInt(4, nuevoIdProducto);
+//        ps.setString(5, nuevoNombre);
+//
+//        int exito = ps.executeUpdate();
+//
+//        if (exito == 1) {
+//            JOptionPane.showMessageDialog(null, "Detalle de compra modificado con éxito.");
+//        } else {
+//            JOptionPane.showMessageDialog(null, "No se encontró el detalle de compra para modificar.");
+//        }
+//    } catch (SQLException ex) {
+//        JOptionPane.showMessageDialog(null, "Error al modificar el detalle de compra: " + ex.getMessage());
+//    }
+//}
     
     
     
@@ -141,7 +173,7 @@ public class DetalleCompraData {
         ps.close();
 
     } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(null, "Error al acceder al detalle de compra");
+        JOptionPane.showMessageDialog(null, "Error al acceder al detalle de compra ");
     }
     return detalleCompra;
 }
@@ -179,13 +211,6 @@ public class DetalleCompraData {
     
     
     
-    
-    
-    
-    
-    
-    
-    
     public List<DetalleCompra> listarDetalleCompra(){
         
         String sql = "SELECT idDetalle, cantidad, precioCosto, codigo FROM detalleCompra WHERE estado = 1";
@@ -208,7 +233,7 @@ public class DetalleCompraData {
             ps.close();
             
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al acceder al detalle de compra");
+            JOptionPane.showMessageDialog(null, "Error al acceder al detalle de compra aqui");
         }
             return detalleCompras;
         

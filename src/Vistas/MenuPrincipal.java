@@ -33,10 +33,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -94,12 +92,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jMenuItem5.setText("Productos mas vendidos");
         jMenu1.add(jMenuItem5);
 
-        jMenuItem6.setBackground(new java.awt.Color(204, 255, 255));
-        jMenuItem6.setFont(new java.awt.Font("Arial Narrow", 1, 16)); // NOI18N
-        jMenuItem6.setForeground(new java.awt.Color(0, 0, 153));
-        jMenuItem6.setText("Productos con poco stock");
-        jMenu1.add(jMenuItem6);
-
         jMenuBar1.add(jMenu1);
 
         jMenu3.setBackground(new java.awt.Color(204, 255, 255));
@@ -112,12 +104,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jMenuItem3.setForeground(new java.awt.Color(0, 0, 153));
         jMenuItem3.setText("Administrar proveedores");
         jMenu3.add(jMenuItem3);
-
-        jMenuItem7.setBackground(new java.awt.Color(204, 255, 255));
-        jMenuItem7.setFont(new java.awt.Font("Arial Narrow", 1, 16)); // NOI18N
-        jMenuItem7.setForeground(new java.awt.Color(0, 0, 153));
-        jMenuItem7.setText("Proveedores por categoria");
-        jMenu3.add(jMenuItem7);
 
         jMenuBar1.add(jMenu3);
 
@@ -240,8 +226,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;

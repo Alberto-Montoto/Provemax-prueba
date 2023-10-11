@@ -21,6 +21,8 @@ public class Compra {
     public Compra() {
     }
 
+
+
     public DetalleCompra getDetalleCompra() {
         return detalleCompra;
     }
