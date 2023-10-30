@@ -1,6 +1,6 @@
 package provemax74.Entidades;
 
-public class Producto {
+public class Producto implements Comparable<Producto> {
 
     private int idProducto;
 
@@ -13,6 +13,8 @@ public class Producto {
     private int stock;
 
     private boolean estado;
+    
+
 
     public Producto(int idProducto, String nombreProducto, String descripcion, double precioActual, int stock, boolean estado) {
         this.idProducto = idProducto;
@@ -23,9 +25,6 @@ public class Producto {
         this.estado = estado;
     }
 
-    public Producto() {
-    }
-
     public Producto(String nombreProducto, String descripcion, double precioActual, int stock, boolean estado) {
         this.nombreProducto = nombreProducto;
         this.descripcion = descripcion;
@@ -34,15 +33,7 @@ public class Producto {
         this.estado = estado;
     }
 
-//    public Producto(int idProducto, String nombreProducto) {
-//        this.idProducto = idProducto;
-//        this.nombreProducto = nombreProducto;
-//    }
-
-    public Producto(int idProducto, String nombreProducto, double precioActual) {
-        this.idProducto = idProducto;
-        this.nombreProducto = nombreProducto;
-        this.precioActual = precioActual;
+    public Producto() {
     }
 
     public int getIdProducto() {
@@ -85,16 +76,23 @@ public class Producto {
         this.stock = stock;
     }
 
-    public boolean isEstado() {
+    public boolean estado() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
+    public void setestado(boolean estado) {
         this.estado = estado;
     }
 
     @Override
     public String toString() {
-        return "Producto{" + "idProducto=" + idProducto + ", nombreProducto=" + nombreProducto + ", descripcion=" + descripcion + ", precioActual=" + precioActual + ", stock=" + stock + ", estado=" + estado + '}';
+        return "Producto{" + "idProducto=" + idProducto + ", nombreProducto=" + nombreProducto + ", descripcion=" + descripcion + ", precioActual=" + precioActual + ", stock=" + stock + ", estado=" + estado +'}';
     }
+
+    @Override    
+    public int compareTo(Producto otroProducto) {
+        // Comparar productos por nombre
+        return this.nombreProducto.compareTo(otroProducto.getNombreProducto());
+    }
+
 }

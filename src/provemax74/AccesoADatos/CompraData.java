@@ -11,53 +11,71 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import provemax74.Entidades.Compra;
+import provemax74.Entidades.DetalleCompra;
+import provemax74.AccesoADatos.ProveedorData;
+import provemax74.AccesoADatos.DetalleCompraData;
 import provemax74.Entidades.Producto;
+import provemax74.Entidades.Proveedor;
 
-
+/**
+ *
+ * @author maria
+ */
 public class CompraData {
+    
+
+    ProveedorData pd = new ProveedorData();
+    DetalleCompraData dcd = new DetalleCompraData();
     
     private Connection con = null;
 
     public CompraData() {
 
         con = Conexion.getConexion();
+        
     }
     
-    //Agregar compra
-    public void nuevaCompra(Compra compra) {
+        //Agregar compra
+    public void agregarCompra(Compra compra){
+    
+        String sql="INSERT INTO compra (fecha, idProveedor)"+
+            "VALUES(?,?)";
+    
         try {
-            String sql = "INSERT INTO compra WHERE"
-                    + "(fecha, idProveedor, idDetalle ) "
-                    + "VALUES (?,?,?)";
             
-            String sql1 =   "INSERT INTO compra (fecha, idProveedor, idDetalle)" 
-                   + "VALUES (?,?,?)";
-            
-            PreparedStatement ps = con.prepareStatement(sql1, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             
             ps.setDate(1, Date.valueOf(compra.getFecha()));
             ps.setInt(2, compra.getProveedor().getIdProveedor());
-            ps.setInt(3, compra.getDetalleCompra().getIdDetalle()); // .getDetalleCompra().getIdDetalle() //getIdProducto
+            
             ps.executeUpdate();
             
-            ResultSet rs = ps.getGeneratedKeys();
+            ResultSet rs=ps.getGeneratedKeys();
             
-            if (rs.next()) {
+            if(rs.next()){
                 compra.setIdCompra(rs.getInt(1));
-                JOptionPane.showMessageDialog(null, "¡Nueva compra añadida con exito!");
+                
+                JOptionPane.showMessageDialog(null, "Compra registrada");
             }
-
+            
             ps.close();
+            
+            
+            
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla compra. " + ex.getMessage());
+            
+             JOptionPane.showMessageDialog(null, "Error al acceder a la tabla compra: " + ex.getMessage());
         }
     }
-    
-    //Eliminar compra por Id
+        
+        //Eliminar compra por Id
     public void eliminarCompra(int id) {
         try {
             String sql = "DELETE FROM compra WHERE idCompra = ?";
@@ -78,8 +96,9 @@ public class CompraData {
             JOptionPane.showMessageDialog(null, "Error al acceder a la tabla compra. " + ex.getMessage());
         }
     }
-        
-    //Buscar compra por Id
+    
+
+        //Buscar compra por Id
     public Compra buscarCompra(int id) {
         Compra compra = null;
         try {
@@ -97,7 +116,7 @@ public class CompraData {
                 compra.setIdCompra(id); 
                 compra.setProveedor(proveedor.buscarProveedor(rs.getInt("idProveedor")));
                 compra.setFecha(rs.getDate("fecha").toLocalDate());
-//                compra.setDetalleCompra(detalle.buscarDetalle1(rs.getInt("idDetalle")));
+                compra.setDetalleCompra(detalle.buscarDetalle(rs.getInt("idDetalle")));
             } else {
                 JOptionPane.showMessageDialog(null, "No existe la compra.");
             }
@@ -108,8 +127,8 @@ public class CompraData {
         }
         return compra;
     }
-    
-    //Listar compra
+
+        //Listar compra
     public List<Compra> listarCompra() {
         List<Compra> compras = new ArrayList();
         try {
@@ -119,12 +138,17 @@ public class CompraData {
             ResultSet rs = ps.executeQuery();
             
             while (rs.next()) {
-                ProveedorData proveedor = new ProveedorData();
+                
                 Compra compra = new Compra();
                 compra.setIdCompra(rs.getInt("idCompra"));
-                compra.setProveedor(proveedor.buscarProveedor(rs.getInt("idProveedor")));
                 compra.setFecha(rs.getDate("fecha").toLocalDate());
                 
+                DetalleCompra det = dcd.buscarDetalle(rs.getInt("idDetalle"));
+                Proveedor prove=pd.buscarProveedor(rs.getInt("idProveedor"));
+                
+                compra.setDetalleCompra(det);
+                compra.setProveedor(prove);
+
                 compras.add(compra);
             }
             
@@ -134,6 +158,60 @@ public class CompraData {
         }
         return compras;
     }
-    
-    
+
+
+    public List<Compra> listarCompraPorProveedor(int idProveedor) {
+        List<Compra> compras = new ArrayList<>();
+
+        try {
+            String query = "SELECT * FROM compra WHERE idProveedor = ?";
+            PreparedStatement statement = con.prepareStatement(query);
+            statement.setInt(1, idProveedor);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Compra compra = new Compra();
+                compra.setIdCompra(resultSet.getInt("idCompra"));
+                compra.setFecha(resultSet.getDate("fecha").toLocalDate());
+
+                // Si tienes detalles de compra y proveedor en la tabla de compras, deberás obtenerlos aquí.
+                // Ejemplo: compra.setDetalleCompra(detalleCompra);
+                //         compra.setProveedor(proveedor);
+                compras.add(compra);
+                
+            }
+
+            statement.close();
+        } catch (SQLException e) {
+            // Maneja cualquier excepción de SQL aquí
+            e.printStackTrace();
+        }
+
+        return compras;
+    }
+
+    public void eliminarCompraVista(int idProveedor, Date fechaCompra) {
+        String sql = "DELETE FROM compra WHERE idProveedor = ? AND fecha = ?";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idProveedor);
+            ps.setDate(2, new java.sql.Date(fechaCompra.getTime())); // Asegúrate de convertir la fecha al formato de SQL
+
+            int filasEliminadas = ps.executeUpdate();
+
+            if (filasEliminadas > 0) {
+                System.out.println("Compra eliminada con éxito.");
+            } else {
+                System.out.println("No se encontró ninguna compra con los criterios especificados.");
+            }
+
+            ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar la compra");
+        }
+    }
+
+
 }
